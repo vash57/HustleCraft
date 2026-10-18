@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en" class="theme-dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="color-scheme" content="dark" />
+<meta name="description" content="HustleCraft — open-source AI Side Hustle Toolkit. Winning freelance proposals, high-converting WhatsApp &amp; social ad copy, and pricing estimations powered by open-weight models." />
+<title>HustleCraft — AI Side Hustle Toolkit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9C%A8%3C/text%3E%3C/svg%3E" />
+<link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+
+<canvas id="particle-canvas" aria-hidden="true"></canvas>
+<div class="aurora" aria-hidden="true">
+  <span class="aurora-blob aurora-blob--a"></span>
+  <span class="aurora-blob aurora-blob--b"></span>
+  <span class="aurora-blob aurora-blob--c"></span>
+</div>
+<div class="grid-overlay" aria-hidden="true"></div>
+
+<header class="topbar glass" id="topbar">
+  <a class="brand" href="#top" aria-label="HustleCraft home">
+    <span class="brand-mark" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z" />
+      </svg>
+    </span>
+    <span class="brand-name">Hustle<span class="brand-name-accent">Craft</span></span>
+    <span class="badge badge--pulse">v1.0</span>
+  </a>
+
+  <nav class="topnav" aria-label="Primary">
+    <a class="topnav-link" href="#workspace">Toolkit</a>
+    <a class="topnav-link" href="#traces">Traces</a>
+    <a class="topnav-link" href="#history">History</a>
+    <button class="topnav-link topnav-btn" type="button" id="hf-open">🎁 Hacktoberfest</button>
+  </nav>
+
+  <div class="topbar-status">
+    <span class="status-dot" id="health-dot" data-state="checking"></span>
+    <span class="status-text" id="health-text">connecting…</span>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ============================ HERO ============================ -->
+  <section class="hero">
+    <p class="hero-eyebrow reveal" style="--d:0ms">
+      <span class="badge badge--violet">open-weight models</span>
+      <span class="badge badge--lime">Groq · Ollama · offline</span>
+      <span class="badge badge--amber">Hacktoberfest 2026</span>
+    </p>
+
+    <h1 class="hero-title reveal" style="--d:70ms">
+      Craft the hustle.<br />
+      <span class="gradient-text shimmer-text">Win the client.</span>
+    </h1>
+
+    <p class="hero-sub reveal" style="--d:150ms">
+      The open-source AI Side Hustle Toolkit for freelancers, indie hackers and micro-business
+      owners — proposals that close, ad copy that converts, and pricing you can defend.
+    </p>
+
+    <div class="hero-actions reveal" style="--d:230ms">
+      <a class="btn btn--primary" href="#workspace">
+        Open the toolkit
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+      <button class="btn btn--ghost" type="button" id="hero-chat">Ask the deal coach</button>
+    </div>
+
+    <div class="hero-stats reveal" style="--d:310ms">
+      <div class="stat glass-card">
+        <span class="stat-value" data-count="3">0</span>
+        <span class="stat-label">AI generators</span>
+      </div>
+      <div class="stat glass-card">
+        <span class="stat-value" data-count="4">0</span>
+        <span class="stat-label">prize tracks</span>
+      </div>
+      <div class="stat glass-card">
+        <span class="stat-value" data-count="0" data-suffix=" deps">0</span>
+        <span class="stat-label">pip installs</span>
+      </div>
+      <div class="stat glass-card">
+        <span class="stat-value" data-count="100" data-suffix="%">0</span>
+        <span class="stat-label">local-first</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ WORKSPACE ============================ -->
+  <section class="workspace glass-card tilt" id="workspace">
+    <div class="workspace-head">
+      <div>
+        <h2 class="section-title">Side Hustle Toolkit</h2>
+        <p class="section-sub">Pick a weapon. Everything streams in real time.</p>
+      </div>
+      <div class="model-chip" id="model-chip" title="Active model">
+        <span class="status-dot" data-state="checking"></span>
+        <span id="model-chip-text">detecting model…</span>
+      </div>
+    </div>
+
+    <div class="tabs" role="tablist" aria-label="Toolkit modes">
+      <span class="tab-indicator" aria-hidden="true"></span>
+      <button class="tab is-active" type="button" role="tab" aria-selected="true" aria-controls="panel-proposal" data-tab="proposal">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><path d="M14 2v6h6M9 15h6M9 11h3"/></svg>
+        Proposal &amp; Pitch
+      </button>
+      <button class="tab" type="button" role="tab" aria-selected="false" aria-controls="panel-adcopy" data-tab="adcopy">
+        <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z"/></svg>
+        WhatsApp &amp; Social Ads
+      </button>
+    </div>
+
+    <!-- ---------------- Proposal panel ---------------- -->
+    <div class="tab-panel is-active" id="panel-proposal" role="tabpanel" data-panel="proposal">
+      <div class="panel-grid">
+        <form class="tool-form stagger" id="proposal-form" novalidate>
+          <div class="field">
+            <label class="field-label" for="pc-desc">
+              Job description
+              <span class="field-hint">paste the client brief</span>
+            </label>
+            <textarea class="input input--area" id="pc-desc" rows="7" required
+              placeholder="e.g. Need a senior React developer to rebuild our marketing site (12 pages), integrate Stripe, and ship in 4 weeks. Current site is slow and dated…"></textarea>
+            <div class="field-meter"><span id="pc-desc-count">0</span> chars</div>
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <label class="field-label" for="pc-budget">Budget</label>
+              <input class="input" id="pc-budget" type="text" placeholder="$1,500 – 3,000" />
+            </div>
+            <div class="field">
+              <label class="field-label" for="pc-deadline">Deadline</label>
+              <input class="input" id="pc-deadline" type="text" placeholder="4 weeks" />
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="pc-skills">Your skills <span class="field-hint">comma separated</span></label>
+            <input class="input" id="pc-skills" type="text" placeholder="React, Stripe, Next.js, performance" />
+            <div class="chip-row" id="skill-chips">
+              <button class="chip" type="button" data-skill="React">React</button>
+              <button class="chip" type="button" data-skill="Copywriting">Copywriting</button>
+              <button class="chip" type="button" data-skill="Figma">Figma</button>
+              <button class="chip" type="button" data-skill="SEO">SEO</button>
+              <button class="chip" type="button" data-skill="Python">Python</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <span class="field-label">Experience level</span>
+            <div class="segmented" id="pc-exp" role="radiogroup" aria-label="Experience level">
+              <button class="seg" type="button" role="radio" aria-checked="false" data-value="beginner">Beginner</button>
+              <button class="seg is-active" type="button" role="radio" aria-checked="true" data-value="intermediate">Intermediate</button>
+              <button class="seg" type="button" role="radio" aria-checked="false" data-value="expert">Expert</button>
+            </div>
+          </div>
+
+          <button class="btn btn--primary btn--block" type="submit" id="pc-generate">
+            <span class="btn-label">Generate winning proposal</span>
+            <span class="btn-spinner" aria-hidden="true"></span>
+            <span class="btn-bolt" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z"/></svg>
+            </span>
+          </button>
+
+          <!-- Pricing estimator -->
+          <div class="mini-card spotlight" id="pricing-card">
+            <div class="mini-card-head">
+              <h3>Pricing Estimator</h3>
+              <span class="badge badge--cyan badge--pulse">live</span>
+            </div>
+            <div class="slider-row">
+              <label for="pr-hours">Hours <b id="pr-hours-val">40</b></label>
+              <input class="slider" id="pr-hours" type="range" min="2" max="240" step="2" value="40" />
+            </div>
+            <div class="slider-row">
+              <label for="pr-rate">Rate $/hr <b id="pr-rate-val">65</b></label>
+              <input class="slider" id="pr-rate" type="range" min="10" max="250" step="5" value="65" />
+            </div>
+            <label class="toggle-row">
+              <input type="checkbox" id="pr-rush" />
+              <span class="toggle-track" aria-hidden="true"><span class="toggle-thumb"></span></span>
+              <span>Rush deadline (+15%)</span>
+            </label>
+            <div class="price-out">
+              <div class="price-out-main">
+                <span class="price-out-label">Quote this</span>
+                <span class="price-out-value" id="pr-total">$2,600</span>
+              </div>
+              <div class="price-out-meta">
+                <span id="pr-range">$1,800 – $3,400</span>
+                <span id="pr-breakdown">40h × $65/hr</span>
+              </div>
+            </div>
+            <button class="btn btn--soft btn--block" type="button" id="pr-ai">Explain with AI</button>
+            <div class="ai-out" id="pr-ai-out" hidden></div>
+          </div>
+        </form>
+
+        <div class="output-zone">
+          <div class="output-toolbar">
+            <div class="output-tabs" role="tablist" aria-label="Proposal views">
+              <button class="otab is-active" type="button" data-view="rendered">Rendered</button>
+              <button class="otab" type="button" data-view="raw">Raw markdown</button>
+            </div>
+            <div class="output-actions">
+              <button class="icon-btn" type="button" id="proposal-save" title="Save to history" disabled>
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2Z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg>
+              </button>
+              <button class="icon-btn" type="button" id="proposal-copy" title="Copy to clipboard" disabled>
+                <svg class="ico-copy" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                <svg class="ico-check" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+              </button>
+              <button class="icon-btn" type="button" id="proposal-clear" title="Clear" disabled>
+                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="skeleton" id="proposal-skeleton" hidden>
+            <div class="skeleton-line w-40"></div>
+            <div class="skeleton-line w-90"></div>
+            <div class="skeleton-line w-75"></div>
+            <div class="skeleton-line w-85"></div>
+            <div class="skeleton-block"></div>
+            <div class="skeleton-line w-60"></div>
+            <div class="skeleton-line w-80"></div>
+          </div>
+
+          <article class="output-empty" id="proposal-empty">
+            <div class="empty-glyph">✍️</div>
+            <h3>No proposal yet</h3>
+            <p>Paste a brief, hit generate, and get a structured pitch with key selling points, risk assessment and a defensible price.</p>
+            <button class="btn btn--soft" type="button" id="proposal-demo">Load a sample brief</button>
+          </article>
+
+          <article class="output-doc" id="proposal-output" hidden>
+            <div class="md" id="proposal-md"></div>
+            <pre class="md-raw" id="proposal-raw" hidden></pre>
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <!-- ---------------- Ad copy panel ---------------- -->
+    <div class="tab-panel" id="panel-adcopy" role="tabpanel" data-panel="adcopy" hidden>
+      <div class="panel-grid">
+        <form class="tool-form stagger" id="ad-form" novalidate>
+          <div class="field">
+            <label class="field-label" for="ac-offer">Offer / service <span class="field-hint">what are you selling</span></label>
+            <textarea class="input input--area" id="ac-offer" rows="5" required
+              placeholder="e.g. 1-hour Instagram growth audit + 30-day content plan for local cafés, delivered in 48 hours for $149"></textarea>
+          </div>
+
+          <div class="field">
+            <label class="field-label" for="ac-audience">Target audience</label>
+            <input class="input" id="ac-audience" type="text" placeholder="busy café owners in Lagos" />
+          </div>
+
+          <div class="field-row">
+            <div class="field">
+              <span class="field-label">Platform</span>
+              <div class="segmented segmented--scroll" id="ac-platform" role="radiogroup" aria-label="Platform">
+                <button class="seg is-active" type="button" role="radio" aria-checked="true" data-value="WhatsApp">WhatsApp</button>
+                <button class="seg" type="button" role="radio" aria-checked="false" data-value="Instagram">Instagram</button>
+                <button class="seg" type="button" role="radio" aria-checked="false" data-value="X">X</button>
+                <button class="seg" type="button" role="radio" aria-checked="false" data-value="TikTok">TikTok</button>
+              </div>
+            </div>
+            <div class="field">
+              <span class="field-label">Tone</span>
+              <div class="segmented segmented--scroll" id="ac-tone" role="radiogroup" aria-label="Tone">
+                <button class="seg is-active" type="button" role="radio" aria-checked="true" data-value="friendly and confident">Friendly</button>
+                <button class="seg" type="button" role="radio" aria-checked="false" data-value="bold and urgent">Bold</button>
+                <button class="seg" type="button" role="radio" aria-checked="false" data-value="premium and minimal">Premium</button>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn btn--primary btn--block" type="submit" id="ac-generate">
+            <span class="btn-label">Write 3 ad copies</span>
+            <span class="btn-spinner" aria-hidden="true"></span>
+            <span class="btn-bolt" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z"/></svg>
+            </span>
+          </button>
+        </form>
+
+        <div class="output-zone">
+          <div class="output-toolbar">
+            <div class="output-tabs">
+              <span class="otab is-active">3 variants</span>
+            </div>
+            <div class="output-actions">
+              <button class="btn btn--soft btn--sm" type="button" id="ad-copy-all" disabled>Copy all</button>
+            </div>
+          </div>
+
+          <div class="skeleton" id="ad-skeleton" hidden>
+            <div class="skeleton-line w-35"></div>
+            <div class="skeleton-line w-88"></div>
+            <div class="skeleton-line w-70"></div>
+            <div class="skeleton-line w-35"></div>
+            <div class="skeleton-line w-82"></div>
+            <div class="skeleton-line w-64"></div>
+          </div>
+
+          <article class="output-empty" id="ad-empty">
+            <div class="empty-glyph">📣</div>
+            <h3>No copy yet</h3>
+            <p>Describe your offer and get three high-converting promotional copies — emojis, hooks and call-to-actions included.</p>
+            <button class="btn btn--soft" type="button" id="ad-demo">Load a sample offer</button>
+          </article>
+
+          <div class="output-doc" id="ad-stream-doc" hidden>
+            <div class="md" id="ad-md"></div>
+          </div>
+
+          <div class="copy-grid" id="ad-cards" hidden></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ TRACE + HISTORY ============================ -->
+  <section class="dual">
+    <!-- Trace viewer -->
+    <div class="glass-card trace-card spotlight" id="traces">
+      <div class="card-head">
+        <div class="card-title">
+          <span class="card-ico card-ico--violet">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+          </span>
+          <div>
+            <h2>Mastra / Sentry Traces</h2>
+            <p>step latency · model execution · token usage</p>
+          </div>
+        </div>
+        <button class="btn btn--soft btn--sm" type="button" id="trace-clear">Clear</button>
+      </div>
+
+      <div class="trace-stats">
+        <div class="tstat">
+          <span class="tstat-value" id="trace-latency">—</span>
+          <span class="tstat-label">latency</span>
+        </div>
+        <div class="tstat">
+          <span class="tstat-value" id="trace-tokens">—</span>
+          <span class="tstat-label">tokens</span>
+        </div>
+        <div class="tstat">
+          <span class="tstat-value" id="trace-model">—</span>
+          <span class="tstat-label">model</span>
+        </div>
+        <div class="tstat">
+          <span class="tstat-value" id="trace-calls">0</span>
+          <span class="tstat-label">calls</span>
+        </div>
+      </div>
+
+      <ol class="trace-list" id="trace-list"></ol>
+      <div class="trace-empty" id="trace-empty">
+        <span class="trace-empty-dot"></span>
+        <p>Run a generator — every step gets instrumented live.</p>
+      </div>
+    </div>
+
+    <!-- History -->
+    <div class="glass-card history-card spotlight" id="history">
+      <div class="card-head">
+        <div class="card-title">
+          <span class="card-ico card-ico--lime">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/></svg>
+          </span>
+          <div>
+            <h2>Local History</h2>
+            <p>stored in your browser · nothing leaves the device</p>
+          </div>
+        </div>
+        <button class="btn btn--soft btn--sm" type="button" id="history-clear">Clear all</button>
+      </div>
+
+      <ul class="history-list" id="history-list"></ul>
+      <div class="history-empty" id="history-empty">
+        <div class="empty-glyph small">🗂️</div>
+        <p>Generated outputs land here automatically. Restore any of them with one click.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ FOOTER ============================ -->
+  <footer class="footer">
+    <p>
+      <span class="badge badge--violet">MIT</span>
+      HustleCraft — built for Hacktoberfest 2026 · runs on pure Python stdlib
+    </p>
+    <p class="footer-links">
+      <a href="/api/health" target="_blank" rel="noopener">/api/health</a>
+      <a href="/api/trace" target="_blank" rel="noopener">/api/trace</a>
+      <a href="https://github.com" target="_blank" rel="noopener" aria-label="GitHub">GitHub</a>
+    </p>
+  </footer>
+</main>
+
+<!-- ============================ OVERLAY ============================ -->
+<div class="overlay" id="overlay" hidden></div>
+
+<!-- ============================ HACKTOBERFEST DRAWER ============================ -->
+<aside class="drawer" id="hf-drawer" role="dialog" aria-modal="true" aria-labelledby="hf-title" hidden>
+  <div class="drawer-head">
+    <div>
+      <span class="badge badge--amber badge--pulse">Oct 2026</span>
+      <h2 id="hf-title">Hacktoberfest Showcase</h2>
+      <p>Four prize tracks. One toolkit. Ship a PR.</p>
+    </div>
+    <button class="icon-btn" type="button" id="hf-close" aria-label="Close drawer">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+
+  <div class="drawer-body">
+    <div class="prize-grid">
+      <button class="prize spotlight" type="button" data-prize="Gemma" style="--prize:#a78bfa">
+        <span class="prize-amount">$200</span>
+        <span class="prize-name">Gemma Track</span>
+        <span class="prize-desc">Best use of Gemma 2 open-weight models via Groq or Ollama</span>
+        <span class="prize-tag badge badge--violet">🥇 grand</span>
+      </button>
+      <button class="prize spotlight" type="button" data-prize="Render" style="--prize:#4ade80">
+        <span class="prize-amount">$200</span>
+        <span class="prize-name">Render Track</span>
+        <span class="prize-desc">Cleanest deploy, DX and performance-minded UI work</span>
+        <span class="prize-tag badge badge--lime">🥇 grand</span>
+      </button>
+      <button class="prize spotlight" type="button" data-prize="Mastra" style="--prize:#22d3ee">
+        <span class="prize-amount">$100</span>
+        <span class="prize-name">Mastra Track</span>
+        <span class="prize-desc">Agent traces, step observability and workflow telemetry</span>
+        <span class="prize-tag badge badge--cyan">🥈 runner</span>
+      </button>
+      <button class="prize spotlight" type="button" data-prize="Atlas" style="--prize:#fbbf24">
+        <span class="prize-amount">$100</span>
+        <span class="prize-name">Atlas Track</span>
+        <span class="prize-desc">Docs, samples and onboarding improvements for contributors</span>
+        <span class="prize-tag badge badge--amber">🥈 runner</span>
+      </button>
+    </div>
+
+    <div class="export-card spotlight">
+      <div class="export-head">
+        <h3>1-click DEV.to post</h3>
+        <span class="badge badge--cyan">markdown exporter</span>
+      </div>
+      <p class="export-hint">
+        Bundles your generated proposals, ad copies, live trace stats and this showcase into a
+        front-matter packed Markdown article — ready to paste into DEV.to.
+      </p>
+      <pre class="export-preview" id="hf-preview"># title: HustleCraft...</pre>
+      <div class="export-actions">
+        <button class="btn btn--primary" type="button" id="hf-export">Export DEV.to Markdown</button>
+        <button class="btn btn--soft" type="button" id="hf-download">Download .md</button>
+      </div>
+    </div>
+
+    <div class="contrib-card">
+      <h3>Good first issues</h3>
+      <ul class="contrib-list">
+        <li><span class="badge badge--lime">good first issue</span> Add streaming markdown table renderer</li>
+        <li><span class="badge badge--violet">help wanted</span> Persian / Hindi copy templates</li>
+        <li><span class="badge badge--amber">enhancement</span> Ollama model picker in settings</li>
+      </ul>
+    </div>
+  </div>
+</aside>
+
+<!-- ============================ CHATBOT ============================ -->
+<button class="chat-fab" type="button" id="chat-fab" aria-label="Open AI assistant" aria-expanded="false">
+  <svg class="fab-ico" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2Z"/>
+  </svg>
+  <svg class="fab-close-ico" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M18 6 6 18M6 6l12 12"/>
+  </svg>
+  <span class="fab-ping" aria-hidden="true"></span>
+</button>
+
+<section class="chat-drawer" id="chat-drawer" role="dialog" aria-label="HustleCraft deal coach" hidden>
+  <header class="chat-head">
+    <span class="chat-avatar" aria-hidden="true">🤖</span>
+    <div class="chat-head-text">
+      <strong>Deal Coach</strong>
+      <span class="chat-status"><i class="status-dot" id="chat-dot" data-state="checking"></i><span id="chat-model">negotiation · pricing · closing</span></span>
+    </div>
+    <button class="icon-btn" type="button" id="chat-close" aria-label="Close chat">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+  </header>
+
+  <div class="chat-messages" id="chat-messages" aria-live="polite"></div>
+
+  <div class="chat-chips" id="chat-chips">
+    <button class="chip" type="button">How much for a landing page?</button>
+    <button class="chip" type="button">Negotiation script for a lowball offer</button>
+    <button class="chip" type="button">Should I raise my rates?</button>
+    <button class="chip" type="button">How do I close after a call?</button>
+  </div>
+
+  <form class="chat-form" id="chat-form">
+    <input class="input" id="chat-input" type="text" autocomplete="off"
+      placeholder="Ask about pricing or negotiation…" aria-label="Message" />
+    <button class="btn btn--primary btn--icon" type="submit" id="chat-send" aria-label="Send">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13M22 2l-7 20-4-9-9-4Z"/></svg>
+    </button>
+  </form>
+</section>
+
+<!-- ============================ TOASTS ============================ -->
+<div class="toast-stack" id="toast-stack" aria-live="polite"></div>
+
+<script src="/static/app.js" defer></script>
+</body>
+</html>
